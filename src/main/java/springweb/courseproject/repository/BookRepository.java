@@ -1,7 +1,7 @@
 package springweb.courseproject.repository;
 
-import springweb.courseproject.model.Book;
 import java.util.List;
+import springweb.courseproject.model.Book;
 
 public interface BookRepository {
     Book save(Book book);

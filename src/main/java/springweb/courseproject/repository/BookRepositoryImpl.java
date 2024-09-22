@@ -1,14 +1,13 @@
 package springweb.courseproject.repository;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import springweb.courseproject.exception.DataProcessingException;
 import springweb.courseproject.model.Book;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
