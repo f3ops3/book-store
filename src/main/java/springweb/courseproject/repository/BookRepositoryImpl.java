@@ -1,21 +1,19 @@
 package springweb.courseproject.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import springweb.courseproject.exception.DataProcessingException;
 import springweb.courseproject.model.Book;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
-    private SessionFactory sessionFactory;
-
-    @Autowired
-    public BookRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    private final SessionFactory sessionFactory;
 
     @Override
     public Book save(Book book) {
@@ -31,7 +29,7 @@ public class BookRepositoryImpl implements BookRepository {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Couldn't save a book = " + book, e);
+            throw new DataProcessingException("Couldn't save a book = " + book, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -44,7 +42,7 @@ public class BookRepositoryImpl implements BookRepository {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from Book", Book.class).getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Couldn't find all books", e);
+            throw new DataProcessingException("Couldn't find all books", e);
         }
     }
 }
