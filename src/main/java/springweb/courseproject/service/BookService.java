@@ -1,10 +1,13 @@
 package springweb.courseproject.service;
 
 import java.util.List;
-import springweb.courseproject.model.Book;
+import springweb.courseproject.dto.BookDto;
+import springweb.courseproject.dto.CreateBookRequestDto;
 
 public interface BookService {
-    Book save(Book book);
+    BookDto save(CreateBookRequestDto book);
 
-    List<Book> findAll();
+    List<BookDto> findAll();
+
+    BookDto findById(long id);
 }

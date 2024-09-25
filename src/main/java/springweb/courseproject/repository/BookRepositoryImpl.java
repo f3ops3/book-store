@@ -1,6 +1,7 @@
 package springweb.courseproject.repository;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -42,6 +43,15 @@ public class BookRepositoryImpl implements BookRepository {
             return session.createQuery("from Book", Book.class).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Couldn't find all books", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(Book.class, id));
+        } catch (Exception e) {
+            throw new DataProcessingException("Couldn't find book with id = " + id, e);
         }
     }
 }
