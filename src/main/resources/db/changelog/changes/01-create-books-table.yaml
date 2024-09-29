@@ -45,3 +45,4 @@ databaseChangeLog:
                   type: tinyint(1)
                   constraints:
                     nullable: false
+

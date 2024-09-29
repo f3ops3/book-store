@@ -2,6 +2,7 @@ package springweb.courseproject.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import springweb.courseproject.dto.BookDto;
@@ -46,6 +47,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBookById(Long id) {
-        bookRepository.findById(id).ifPresent(bookRepository::delete);
+        Optional<Book> book = bookRepository.findById(id);
+        bookRepository.delete(book.get());
     }
 }
