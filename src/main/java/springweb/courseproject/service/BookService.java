@@ -2,6 +2,7 @@ package springweb.courseproject.service;
 
 import java.util.List;
 import springweb.courseproject.dto.BookDto;
+import springweb.courseproject.dto.BookSearchParametersDto;
 import springweb.courseproject.dto.CreateBookRequestDto;
 
 public interface BookService {
@@ -14,4 +15,6 @@ public interface BookService {
     BookDto updateBookById(Long id, CreateBookRequestDto book);
 
     void deleteBookById(Long id);
+
+    List<BookDto> search(BookSearchParametersDto searchParametersDto);
 }
