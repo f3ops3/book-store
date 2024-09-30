@@ -2,6 +2,7 @@ package springweb.courseproject.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import springweb.courseproject.dto.BookDto;
@@ -30,9 +31,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto findById(long id) {
+    public BookDto findById(Long id) {
         return bookMapper.toDto(bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Couldn't find book with id = " + id))
         );
+    }
+
+    @Override
+    public BookDto updateBookById(Long id, CreateBookRequestDto bookDto) {
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Couldn't find book with id = " + id));
+        bookMapper.updateBook(bookDto, book);
+        return bookMapper.toDto(bookRepository.save(book));
+    }
+
+    @Override
+    public void deleteBookById(Long id) {
+        Optional<Book> book = bookRepository.findById(id);
+        bookRepository.delete(book.get());
     }
 }

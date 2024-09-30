@@ -1,6 +1,7 @@
 package springweb.courseproject.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import springweb.courseproject.config.MapperConfig;
 import springweb.courseproject.dto.BookDto;
 import springweb.courseproject.dto.CreateBookRequestDto;
@@ -11,4 +12,6 @@ public interface BookMapper {
     BookDto toDto(Book book);
 
     Book toBook(CreateBookRequestDto dto);
+
+    void updateBook(CreateBookRequestDto bookDto, @MappingTarget Book book);
 }
