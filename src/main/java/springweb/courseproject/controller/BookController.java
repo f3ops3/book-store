@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springweb.courseproject.dto.BookDto;
+import springweb.courseproject.dto.BookSearchParametersDto;
 import springweb.courseproject.dto.CreateBookRequestDto;
 import springweb.courseproject.service.BookService;
 
@@ -44,4 +45,10 @@ public class BookController {
     public BookDto updateBook(@RequestBody CreateBookRequestDto bookDto, @PathVariable Long id) {
         return bookService.updateBookById(id, bookDto);
     }
+
+    @GetMapping("/search")
+    public List<BookDto> searchBooks(BookSearchParametersDto searchParameters) {
+        return bookService.search(searchParameters);
+    }
+
 }
