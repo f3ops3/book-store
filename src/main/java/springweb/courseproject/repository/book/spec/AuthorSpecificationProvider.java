@@ -8,16 +8,16 @@ import springweb.courseproject.repository.SpecificationProvider;
 
 @Component
 public class AuthorSpecificationProvider implements SpecificationProvider<Book> {
-    private static final String COLUMN_NAME = "author";
+    private static final String AUTHOR_COLUMN = "author";
 
     @Override
     public String getKey() {
-        return COLUMN_NAME;
+        return AUTHOR_COLUMN;
     }
 
     @Override
     public Specification<Book> getSpecification(String[] params) {
         return (root, query, criteriaBuilder)
-                -> root.get(COLUMN_NAME).in(Arrays.stream(params).toArray());
+                -> root.get(AUTHOR_COLUMN).in(Arrays.stream(params).toArray());
     }
 }

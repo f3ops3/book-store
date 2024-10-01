@@ -11,6 +11,8 @@ import springweb.courseproject.repository.SpecificationProviderManager;
 @Component
 @RequiredArgsConstructor
 public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
+    private static final String AUTHOR_KEY = "author";
+    private static final String TITLE_KEY = "title";
     private final SpecificationProviderManager<Book> bookSpecificationProviderManager;
 
     @Override
@@ -18,12 +20,12 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
         Specification<Book> spec = Specification.where(null);
         if (searchParametersDto.authors() != null && searchParametersDto.authors().length > 0) {
             spec = spec.and(bookSpecificationProviderManager
-                    .getSpecificationProvider("author")
+                    .getSpecificationProvider(AUTHOR_KEY)
                     .getSpecification(searchParametersDto.authors()));
         }
         if (searchParametersDto.titles() != null && searchParametersDto.titles().length > 0) {
             spec = spec.and(bookSpecificationProviderManager
-                    .getSpecificationProvider("title")
+                    .getSpecificationProvider(TITLE_KEY)
                     .getSpecification(searchParametersDto.titles()));
         }
         return spec;
