@@ -1,4 +1,4 @@
-package springweb.courseproject.service;
+package springweb.courseproject.service.book;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import springweb.courseproject.dto.BookDto;
-import springweb.courseproject.dto.BookSearchParametersDto;
-import springweb.courseproject.dto.CreateBookRequestDto;
+import springweb.courseproject.dto.book.BookDto;
+import springweb.courseproject.dto.book.BookSearchParametersDto;
+import springweb.courseproject.dto.book.CreateBookRequestDto;
 import springweb.courseproject.mapper.BookMapper;
 import springweb.courseproject.model.Book;
-import springweb.courseproject.repository.BookRepository;
+import springweb.courseproject.repository.book.BookRepository;
 import springweb.courseproject.repository.book.BookSpecificationBuilder;
 
 @Service

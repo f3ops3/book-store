@@ -1,4 +1,4 @@
-package springweb.courseproject.dto;
+package springweb.courseproject.dto.book;
 
 import java.math.BigDecimal;
 import lombok.Data;

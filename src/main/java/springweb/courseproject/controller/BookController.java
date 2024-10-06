@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springweb.courseproject.dto.BookDto;
-import springweb.courseproject.dto.BookSearchParametersDto;
-import springweb.courseproject.dto.CreateBookRequestDto;
-import springweb.courseproject.service.BookService;
+import springweb.courseproject.dto.book.BookDto;
+import springweb.courseproject.dto.book.BookSearchParametersDto;
+import springweb.courseproject.dto.book.CreateBookRequestDto;
+import springweb.courseproject.service.book.BookService;
 
 @Tag(name = "Books store", description = "Endpoints for managing books")
 @RestController

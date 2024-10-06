@@ -1,10 +1,10 @@
-package springweb.courseproject.service;
+package springweb.courseproject.service.book;
 
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-import springweb.courseproject.dto.BookDto;
-import springweb.courseproject.dto.BookSearchParametersDto;
-import springweb.courseproject.dto.CreateBookRequestDto;
+import springweb.courseproject.dto.book.BookDto;
+import springweb.courseproject.dto.book.BookSearchParametersDto;
+import springweb.courseproject.dto.book.CreateBookRequestDto;
 
 public interface BookService {
     BookDto save(CreateBookRequestDto book);
