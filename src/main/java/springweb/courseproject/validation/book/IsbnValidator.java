@@ -1,4 +1,4 @@
-package springweb.courseproject.validation;
+package springweb.courseproject.validation.book;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

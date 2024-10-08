@@ -3,7 +3,7 @@ package springweb.courseproject.repository.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import springweb.courseproject.dto.BookSearchParametersDto;
+import springweb.courseproject.dto.book.BookSearchParametersDto;
 import springweb.courseproject.model.Book;
 import springweb.courseproject.repository.SpecificationBuilder;
 import springweb.courseproject.repository.SpecificationProviderManager;

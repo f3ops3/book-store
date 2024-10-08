@@ -1,4 +1,4 @@
-package springweb.courseproject.validation;
+package springweb.courseproject.validation.user;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -7,11 +7,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = {IsbnValidator.class})
-@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Constraint(validatedBy = {FieldMatchValidator.class})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Isbn {
-    String message() default "Invalid isbn";
+public @interface FieldMatch {
+    String message() default "Passwords do not match";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
+    String first();
+    String second();
 }

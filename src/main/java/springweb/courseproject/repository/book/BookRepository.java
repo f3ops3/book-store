@@ -1,4 +1,4 @@
-package springweb.courseproject.repository;
+package springweb.courseproject.repository.book;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
