@@ -21,7 +21,7 @@ public class AuthenticationController {
     private final UserService userService;
 
     @Operation(summary = "Register new user")
-    @PostMapping("registration")
+    @PostMapping("/registration")
     public UserResponseDto register(@RequestBody @Valid UserRegistrationRequestDto request)
             throws RegistrationException {
         return userService.register(request);
