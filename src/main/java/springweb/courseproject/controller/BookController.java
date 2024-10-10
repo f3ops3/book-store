@@ -27,14 +27,14 @@ import springweb.courseproject.service.book.BookService;
 public class BookController {
     private final BookService bookService;
 
-    @PreAuthorize("hasRole(('ADMIN'))")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new book", description = "Create a new book")
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
 
-    @PreAuthorize("hasRole(('ADMIN'))")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update a book", description = "Update a particular book by id")
     @PutMapping("/{id}")
     public BookDto updateBook(@RequestBody @Valid CreateBookRequestDto bookDto,
@@ -42,28 +42,28 @@ public class BookController {
         return bookService.updateBookById(id, bookDto);
     }
 
-    @PreAuthorize("hasRole(('ADMIN'))")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a book", description = "Delete a particular book by id")
     @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteBookById(id);
     }
 
-    @PreAuthorize("hasRole(('USER'))")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Get all books")
     @GetMapping
     public List<BookDto> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
-    @PreAuthorize("hasRole(('USER'))")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Get a book", description = "Get a particular book by id")
     @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
-    @PreAuthorize("hasRole(('USER'))")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Search books", description = "Search books by parameters")
     @GetMapping("/search")
     public List<BookDto> searchBooks(BookSearchParametersDto searchParameters, Pageable pageable) {
