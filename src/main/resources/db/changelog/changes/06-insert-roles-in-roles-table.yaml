@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-roles-in-roles-table
+      author: panchenko
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: role
+                  value: ROLE_ADMIN
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: role
+                  value: ROLE_USER
+
