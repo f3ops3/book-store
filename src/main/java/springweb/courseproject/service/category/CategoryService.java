@@ -1,17 +1,17 @@
 package springweb.courseproject.service.category;
 
 import java.util.List;
-import springweb.courseproject.dto.category.CategoryDto;
+import springweb.courseproject.dto.category.CategoryResponseDto;
 import springweb.courseproject.dto.category.CreateCategoryRequestDto;
 
 public interface CategoryService {
-    List<CategoryDto> findAll();
+    List<CategoryResponseDto> findAll();
 
-    CategoryDto getById(Long id);
+    CategoryResponseDto getById(Long id);
 
-    CategoryDto save(CreateCategoryRequestDto categoryDto);
+    CategoryResponseDto save(CreateCategoryRequestDto categoryDto);
 
-    CategoryDto update(Long id, CreateCategoryRequestDto categoryDto);
+    CategoryResponseDto update(Long id, CreateCategoryRequestDto categoryDto);
 
     void deleteById(Long id);
 }
