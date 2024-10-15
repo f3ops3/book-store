@@ -2,7 +2,6 @@ package springweb.courseproject.service.book;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -61,8 +60,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBookById(Long id) {
-        Optional<Book> book = bookRepository.findById(id);
-        bookRepository.delete(book.get());
+        bookRepository.deleteById(id);
     }
 
     @Override

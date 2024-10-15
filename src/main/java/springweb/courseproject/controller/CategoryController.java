@@ -2,6 +2,7 @@ package springweb.courseproject.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,8 @@ public class CategoryController {
     @Operation(summary = "Create a new category", description = "Create a new category")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public CategoryResponseDto createCategory(@RequestBody CreateCategoryRequestDto categoryDto) {
+    public CategoryResponseDto createCategory(
+            @RequestBody @Valid CreateCategoryRequestDto categoryDto) {
         return categoryService.save(categoryDto);
     }
 
@@ -42,8 +44,9 @@ public class CategoryController {
     @Operation(summary = "Update a category", description = "Update a particular category by id")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public CategoryResponseDto updateCategory(@PathVariable Long id,
-                                              @RequestBody CreateCategoryRequestDto categoryDto) {
+    public CategoryResponseDto updateCategory(
+            @PathVariable Long id,
+            @RequestBody @Valid CreateCategoryRequestDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 

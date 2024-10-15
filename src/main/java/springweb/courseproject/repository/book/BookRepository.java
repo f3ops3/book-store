@@ -13,15 +13,12 @@ import org.springframework.data.repository.query.Param;
 import springweb.courseproject.model.Book;
 
 public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
-    @Override
     @EntityGraph(attributePaths = "categories")
     Optional<Book> findById(Long id);
 
-    @Override
     @EntityGraph(attributePaths = "categories")
     Page<Book> findAll(Pageable pageable);
 
-    @Override
     @EntityGraph(attributePaths = "categories")
     Page<Book> findAll(Specification<Book> specification, Pageable pageable);
 

@@ -1,7 +1,6 @@
 package springweb.courseproject.service.category;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import springweb.courseproject.dto.category.CategoryResponseDto;
@@ -47,7 +46,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteById(Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        categoryRepository.delete(category.get());
+        categoryRepository.deleteById(id);
     }
 }
