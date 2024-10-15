@@ -10,5 +10,5 @@ import springweb.courseproject.model.User;
 public interface UserMapper {
     UserResponseDto toDto(User user);
 
-    User toUser(UserRegistrationRequestDto userRegistrationRequestDto);
+    User toEntity(UserRegistrationRequestDto userRegistrationRequestDto);
 }

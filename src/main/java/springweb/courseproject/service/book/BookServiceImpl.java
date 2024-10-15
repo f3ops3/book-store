@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import springweb.courseproject.dto.book.BookDto;
+import springweb.courseproject.dto.book.BookDtoWithoutCategoryIds;
 import springweb.courseproject.dto.book.BookSearchParametersDto;
 import springweb.courseproject.dto.book.CreateBookRequestDto;
 import springweb.courseproject.mapper.BookMapper;
@@ -24,7 +25,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(CreateBookRequestDto book) {
-        Book bookToSave = bookMapper.toBook(book);
+        Book bookToSave = bookMapper.toEntity(book);
         return bookMapper.toDto(bookRepository.save(bookToSave));
     }
 
@@ -32,6 +33,14 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> findAll(Pageable pageable) {
         return bookRepository.findAll(pageable).stream()
                 .map(bookMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> findAllByCategoryId(Long categoryId,
+                                                               Pageable pageable) {
+        return bookRepository.findAllByCategoryId(categoryId, pageable).stream()
+                .map(bookMapper::toDtoWithoutCategories)
                 .toList();
     }
 
