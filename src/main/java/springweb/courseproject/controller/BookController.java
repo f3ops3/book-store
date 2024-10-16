@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import springweb.courseproject.dto.book.BookDto;
 import springweb.courseproject.dto.book.BookSearchParametersDto;
@@ -29,6 +31,7 @@ public class BookController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new book", description = "Create a new book")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
@@ -44,6 +47,7 @@ public class BookController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a book", description = "Delete a particular book by id")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteBookById(id);

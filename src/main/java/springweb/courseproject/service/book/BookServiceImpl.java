@@ -2,12 +2,12 @@ package springweb.courseproject.service.book;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import springweb.courseproject.dto.book.BookDto;
+import springweb.courseproject.dto.book.BookDtoWithoutCategoryIds;
 import springweb.courseproject.dto.book.BookSearchParametersDto;
 import springweb.courseproject.dto.book.CreateBookRequestDto;
 import springweb.courseproject.mapper.BookMapper;
@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(CreateBookRequestDto book) {
-        Book bookToSave = bookMapper.toBook(book);
+        Book bookToSave = bookMapper.toEntity(book);
         return bookMapper.toDto(bookRepository.save(bookToSave));
     }
 
@@ -32,6 +32,14 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> findAll(Pageable pageable) {
         return bookRepository.findAll(pageable).stream()
                 .map(bookMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> findAllByCategoryId(Long categoryId,
+                                                               Pageable pageable) {
+        return bookRepository.findAllByCategoryId(categoryId, pageable).stream()
+                .map(bookMapper::toDtoWithoutCategories)
                 .toList();
     }
 
@@ -52,8 +60,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBookById(Long id) {
-        Optional<Book> book = bookRepository.findById(id);
-        bookRepository.delete(book.get());
+        bookRepository.deleteById(id);
     }
 
     @Override
