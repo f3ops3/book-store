@@ -35,7 +35,8 @@ public class ShoppingCartController {
             description = "Get all cart items from current user's shopping cart")
     @PreAuthorize("hasRole('USER')")
     @GetMapping
-    public ShoppingCartResponseDto getShoppingCart(Pageable pageable, @AuthenticationPrincipal User user) {
+    public ShoppingCartResponseDto getShoppingCart(
+            Pageable pageable, @AuthenticationPrincipal User user) {
         return shoppingCartService.getShoppingCartForCurrentUser(user.getId());
     }
 
