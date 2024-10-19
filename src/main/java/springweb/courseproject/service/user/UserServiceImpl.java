@@ -10,18 +10,17 @@ import springweb.courseproject.dto.user.UserResponseDto;
 import springweb.courseproject.exception.RegistrationException;
 import springweb.courseproject.mapper.UserMapper;
 import springweb.courseproject.model.Role;
-import springweb.courseproject.model.ShoppingCart;
 import springweb.courseproject.model.User;
 import springweb.courseproject.repository.role.RoleRepository;
-import springweb.courseproject.repository.shoppingcart.ShoppingCartRepository;
 import springweb.courseproject.repository.user.UserRepository;
+import springweb.courseproject.service.shoppingcart.ShoppingCartService;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final ShoppingCartRepository shoppingCartRepository;
+    private final ShoppingCartService shoppingCartService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -37,9 +36,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Set.of(roleRepository.findByRole(Role.RoleName.ROLE_USER)));
         user.setPassword(passwordEncoder.encode(userRegistrationRequestDto.getPassword()));
         userRepository.save(user);
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
-        shoppingCartRepository.save(shoppingCart);
+        shoppingCartService.createShoppingCart(user);
         return userMapper.toDto(user);
     }
 }

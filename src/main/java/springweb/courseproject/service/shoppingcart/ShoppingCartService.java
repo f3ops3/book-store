@@ -1,17 +1,19 @@
 package springweb.courseproject.service.shoppingcart;
 
-import springweb.courseproject.dto.cartitem.CartItemResponseDto;
 import springweb.courseproject.dto.cartitem.CreateCartItemRequestDto;
 import springweb.courseproject.dto.cartitem.UpdateCartItemRequestDto;
 import springweb.courseproject.dto.shoppingcart.ShoppingCartResponseDto;
+import springweb.courseproject.model.User;
 
 public interface ShoppingCartService {
+    void createShoppingCart(User user);
+
     ShoppingCartResponseDto getShoppingCartForCurrentUser(Long userId);
 
-    CartItemResponseDto addCartItem(
+    ShoppingCartResponseDto addCartItem(
             CreateCartItemRequestDto createCartItemRequestDto, Long userId);
 
-    CartItemResponseDto updateCartItemById(
+    ShoppingCartResponseDto updateCartItemById(
             Long cartId, UpdateCartItemRequestDto updateCartItemRequestDto, Long userId);
 
     void removeCartItemById(Long cartId, Long userId);

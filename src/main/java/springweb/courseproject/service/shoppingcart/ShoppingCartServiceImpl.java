@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import springweb.courseproject.dto.cartitem.CartItemResponseDto;
 import springweb.courseproject.dto.cartitem.CreateCartItemRequestDto;
 import springweb.courseproject.dto.cartitem.UpdateCartItemRequestDto;
 import springweb.courseproject.dto.shoppingcart.ShoppingCartResponseDto;
@@ -15,6 +14,7 @@ import springweb.courseproject.mapper.ShoppingCartMapper;
 import springweb.courseproject.model.Book;
 import springweb.courseproject.model.CartItem;
 import springweb.courseproject.model.ShoppingCart;
+import springweb.courseproject.model.User;
 import springweb.courseproject.repository.book.BookRepository;
 import springweb.courseproject.repository.cartitem.CartItemRepository;
 import springweb.courseproject.repository.shoppingcart.ShoppingCartRepository;
@@ -29,13 +29,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final CartItemMapper cartItemMapper;
 
     @Override
+    public void createShoppingCart(User user) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCartRepository.save(shoppingCart);
+    }
+
+    @Override
     public ShoppingCartResponseDto getShoppingCartForCurrentUser(Long userId) {
         return shoppingCartMapper.toDto(shoppingCartRepository.findByUserId(userId));
     }
 
     @Transactional
     @Override
-    public CartItemResponseDto addCartItem(
+    public ShoppingCartResponseDto addCartItem(
             CreateCartItemRequestDto createCartItemRequestDto, Long userId) {
         Book book = bookRepository.findById(createCartItemRequestDto.getBookId()).orElseThrow(
                 () -> new EntityNotFoundException("Couldn't find a book with id = "
@@ -57,17 +64,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             shoppingCart.getCartItems().add(cartItem);
         }
         cartItem.setBook(book);
-        return cartItemMapper.toDto(cartItemRepository.save(cartItem));
+        cartItemRepository.save(cartItem);
+        return shoppingCartMapper.toDto(shoppingCart);
     }
 
     @Override
-    public CartItemResponseDto updateCartItemById(
+    public ShoppingCartResponseDto updateCartItemById(
             Long cartId, UpdateCartItemRequestDto updateCartItemRequestDto, Long userId) {
         CartItem cartItem = getCartItemIfExists(cartId);
-        checkIfCartItemBelongsToCurrentUser(cartId, cartItem, userId);
+        ShoppingCart shoppingCart = checkIfCartItemBelongsToCurrentUser(cartId, cartItem, userId);
         cartItemMapper.updateCartItem(cartItem, updateCartItemRequestDto);
         cartItemRepository.save(cartItem);
-        return cartItemMapper.toDto(cartItem);
+        return shoppingCartMapper.toDto(updateCartItemInShoppingCart(shoppingCart, cartItem));
     }
 
     @Override
@@ -83,7 +91,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                         "Couldn't find cart item with id = " + cartItemId));
     }
 
-    private void checkIfCartItemBelongsToCurrentUser(
+    private ShoppingCart checkIfCartItemBelongsToCurrentUser(
             Long cartId, CartItem cartItem, Long userId) {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId);
         if (shoppingCart.getCartItems().stream()
@@ -91,5 +99,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             throw new DataProcessingException("Cart item with id = " + cartId
                     + " does not belong to this user.");
         }
+        return shoppingCart;
+    }
+
+    private ShoppingCart updateCartItemInShoppingCart(ShoppingCart shoppingCart,
+            CartItem cartItem) {
+        shoppingCart.getCartItems().stream()
+                .filter(item -> item.getId().equals(cartItem.getId()))
+                .forEach(item -> item.setQuantity(cartItem.getQuantity()));
+        return shoppingCart;
     }
 }
