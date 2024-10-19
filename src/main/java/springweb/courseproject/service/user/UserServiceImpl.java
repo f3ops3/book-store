@@ -1,5 +1,6 @@
 package springweb.courseproject.service.user;
 
+import jakarta.transaction.Transactional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,15 +13,18 @@ import springweb.courseproject.model.Role;
 import springweb.courseproject.model.User;
 import springweb.courseproject.repository.role.RoleRepository;
 import springweb.courseproject.repository.user.UserRepository;
+import springweb.courseproject.service.shoppingcart.ShoppingCartService;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ShoppingCartService shoppingCartService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     @Override
     public UserResponseDto register(UserRegistrationRequestDto userRegistrationRequestDto)
             throws RegistrationException {
@@ -31,6 +35,8 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toEntity(userRegistrationRequestDto);
         user.setRoles(Set.of(roleRepository.findByRole(Role.RoleName.ROLE_USER)));
         user.setPassword(passwordEncoder.encode(userRegistrationRequestDto.getPassword()));
-        return userMapper.toDto(userRepository.save(user));
+        userRepository.save(user);
+        shoppingCartService.createShoppingCart(user);
+        return userMapper.toDto(user);
     }
 }
