@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import springweb.courseproject.dto.order.CreateOrderRequestDto;
 import springweb.courseproject.dto.order.OrderResponseDto;
-import springweb.courseproject.dto.order.PatchOrderRequestDto;
+import springweb.courseproject.dto.order.UpdateOrderRequestDto;
 import springweb.courseproject.dto.orderitem.OrderItemResponseDto;
 
 public interface OrderService {
@@ -12,7 +12,7 @@ public interface OrderService {
 
     List<OrderResponseDto> getAllUsersOrders(Pageable pageable, Long userId);
 
-    OrderResponseDto patchOrder(Long orderId, PatchOrderRequestDto patchOrderRequestDto);
+    OrderResponseDto updateOrder(Long orderId, UpdateOrderRequestDto updateOrderRequestDto);
 
     List<OrderItemResponseDto> getOrderItemsById(Long orderId, Long userId);
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import springweb.courseproject.model.Status;
 
 @Data
-public class PatchOrderRequestDto {
+public class UpdateOrderRequestDto {
     @NotNull
     private Status status;
 }

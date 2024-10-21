@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import springweb.courseproject.dto.order.CreateOrderRequestDto;
 import springweb.courseproject.dto.order.OrderResponseDto;
-import springweb.courseproject.dto.order.PatchOrderRequestDto;
+import springweb.courseproject.dto.order.UpdateOrderRequestDto;
 import springweb.courseproject.dto.orderitem.OrderItemResponseDto;
 import springweb.courseproject.model.User;
 import springweb.courseproject.service.order.OrderService;
@@ -34,13 +36,14 @@ public class OrderController {
     @PatchMapping("/{orderId}")
     public OrderResponseDto updateOrder(
             @PathVariable Long orderId,
-            @RequestBody @Valid PatchOrderRequestDto patchOrderRequestDto) {
-        return orderService.patchOrder(orderId, patchOrderRequestDto);
+            @RequestBody @Valid UpdateOrderRequestDto updateOrderRequestDto) {
+        return orderService.updateOrder(orderId, updateOrderRequestDto);
     }
 
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Create a new order",
             description = "Create a new order with current shopping cart")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public OrderResponseDto createOrder(
             @RequestBody @Valid CreateOrderRequestDto createOrderRequestDto,

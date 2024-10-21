@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import springweb.courseproject.dto.order.CreateOrderRequestDto;
 import springweb.courseproject.dto.order.OrderResponseDto;
-import springweb.courseproject.dto.order.PatchOrderRequestDto;
+import springweb.courseproject.dto.order.UpdateOrderRequestDto;
 import springweb.courseproject.dto.orderitem.OrderItemResponseDto;
 import springweb.courseproject.exception.DataProcessingException;
 import springweb.courseproject.exception.EntityNotFoundException;
@@ -21,17 +22,13 @@ import springweb.courseproject.model.OrderItem;
 import springweb.courseproject.model.ShoppingCart;
 import springweb.courseproject.model.Status;
 import springweb.courseproject.repository.order.OrderRepository;
-import springweb.courseproject.repository.orderitem.OrderItemRepository;
 import springweb.courseproject.repository.shoppingcart.ShoppingCartRepository;
-import springweb.courseproject.repository.user.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
     private final ShoppingCartRepository shoppingCartRepository;
-    private final UserRepository userRepository;
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
 
@@ -49,19 +46,19 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.PENDING);
         order.setOrderDate(LocalDateTime.now());
         order.setShippingAddress(createOrderRequestDto.getShippingAddress());
-        order.setOrderItems(cart.getCartItems().stream()
+        Set<OrderItem> orderItemSet = cart.getCartItems().stream()
                 .map(cartItem -> {
                     OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
                     orderItem.setOrder(order);
                     return orderItem;
                 })
-                .collect(Collectors.toSet())
-        );
-        order.setTotal(cart.getCartItems().stream()
+                .collect(Collectors.toSet());
+        order.setOrderItems(orderItemSet);
+        BigDecimal total = cart.getCartItems().stream()
                 .map(cartItem -> cartItem.getBook().getPrice().multiply(
                         BigDecimal.valueOf(cartItem.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-        );
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        order.setTotal(total);
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -73,11 +70,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto patchOrder(Long orderId, PatchOrderRequestDto patchOrderRequestDto) {
+    public OrderResponseDto updateOrder(Long orderId, UpdateOrderRequestDto updateOrderRequestDto) {
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new EntityNotFoundException("Order with order id " + orderId + " not found")
         );
-        order.setStatus(patchOrderRequestDto.getStatus());
+        order.setStatus(updateOrderRequestDto.getStatus());
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -94,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderItemResponseDto getOrderItemFromOrderByIds(Long orderId,
-                                                      Long userId, Long orderItemId) {
+                                                           Long userId, Long orderItemId) {
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new EntityNotFoundException("Order with order id " + orderId + " not found")
         );
