@@ -18,12 +18,10 @@ import springweb.courseproject.exception.EntityNotFoundException;
 import springweb.courseproject.exception.OrderProcessingException;
 import springweb.courseproject.mapper.OrderItemMapper;
 import springweb.courseproject.mapper.OrderMapper;
-import springweb.courseproject.model.CartItem;
 import springweb.courseproject.model.Order;
 import springweb.courseproject.model.OrderItem;
 import springweb.courseproject.model.ShoppingCart;
 import springweb.courseproject.model.Status;
-import springweb.courseproject.repository.cartitem.CartItemRepository;
 import springweb.courseproject.repository.order.OrderRepository;
 import springweb.courseproject.repository.orderitem.OrderItemRepository;
 import springweb.courseproject.repository.shoppingcart.ShoppingCartRepository;
@@ -36,7 +34,6 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
     private final OrderItemRepository orderItemRepository;
-    private final CartItemRepository cartItemRepository;
 
     @Transactional
     @Override
@@ -50,7 +47,6 @@ public class OrderServiceImpl implements OrderService {
         }
         Order order = prepareOrder(cart, createOrderRequestDto);
         orderRepository.save(order);
-        clearShoppingCart(cart);
         cart.getCartItems().clear();
         shoppingCartRepository.save(cart);
         return orderMapper.toDto(order);
@@ -120,11 +116,5 @@ public class OrderServiceImpl implements OrderService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         order.setTotal(total);
         return order;
-    }
-
-    private void clearShoppingCart(ShoppingCart cart) {
-        for (CartItem cartItem : cart.getCartItems()) {
-            cartItemRepository.deleteById(cartItem.getId());
-        }
     }
 }
