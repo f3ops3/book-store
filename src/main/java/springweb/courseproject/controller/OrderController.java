@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,7 +56,7 @@ public class OrderController {
     @Operation(summary = "Get all orders",
             description = "Get all orders that belong to current user")
     @GetMapping
-    public List<OrderResponseDto> getAllOrders(Pageable pageable,
+    public Page<OrderResponseDto> getAllOrders(Pageable pageable,
                                                @AuthenticationPrincipal User user) {
         return orderService.getAllUsersOrders(pageable, user.getId());
     }
