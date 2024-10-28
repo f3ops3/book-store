@@ -42,6 +42,9 @@ public class BookControllerTest {
     @Sql(scripts = {"classpath:/database/category/add-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
+    @Sql(scripts = {"classpath:/database/delete-books-categories-relation.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+    )
     @Sql(scripts = {"classpath:/database/book/delete-books.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
     )
