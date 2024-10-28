@@ -66,14 +66,15 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/category/add-category.sql"},
+    @Sql(scripts = {"classpath:/database/category/delete-category.sql",
+            "classpath:/database/category/add-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @WithMockUser(username = "User", roles = "USER")
     @DisplayName("Get category by id")
     void getCategory_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 5L;
+        Long validId = 1L;
         //WHEN
         MvcResult result = mockMvc.perform(
                         get("/categories/{id}", validId)
@@ -90,14 +91,15 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/category/add-category.sql"},
+    @Sql(scripts = {"classpath:/database/category/delete-category.sql",
+            "classpath:/database/category/add-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @WithMockUser(username = "Admin", roles = "ADMIN")
     @DisplayName("Delete category by id")
     void deleteCategory_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 4L;
+        Long validId = 1L;
         //WHEN
         mockMvc.perform(
                         delete("/categories/{id}", validId)
@@ -131,14 +133,15 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/category/add-category.sql"},
+    @Sql(scripts = {"classpath:/database/category/delete-category.sql",
+            "classpath:/database/category/add-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @WithMockUser(username = "ADMIN", roles = "ADMIN")
     @DisplayName("Update category by id")
     void updateCategory_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 2L;
+        Long validId = 1L;
         String jsonRequest = objectMapper.writeValueAsString(UPDATE_CATEGORY_REQUEST_DTO);
         //WHEN
         MvcResult result = mockMvc.perform(

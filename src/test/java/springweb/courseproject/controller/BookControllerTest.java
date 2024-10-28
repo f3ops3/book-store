@@ -79,7 +79,7 @@ public class BookControllerTest {
     @DisplayName("Get book by id")
     void getBook_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 4L;
+        Long validId = 1L;
         BookDto expected = CREATE_BOOK_RESPONSE_DTO;
         expected.setIsbn(SECOND_BOOK_ISBN);
         //WHEN
@@ -106,7 +106,7 @@ public class BookControllerTest {
     @DisplayName("Delete book by id")
     void deleteBook_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 1L;
+        Long validId = 2L;
         //WHEN
         mockMvc.perform(delete("/books/{id}", validId)
                         .contentType(MediaType.APPLICATION_JSON)
