@@ -26,10 +26,16 @@ import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 import springweb.courseproject.dto.book.BookDto;
 
-@Sql(scripts = {"classpath:/database/category/delete-category.sql"},
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = {"classpath:database/books/add-books-to-book-table.sql",
+        "classpath:database/categories/add-category-to-categories-table.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"classpath:database/books-categories/delete-books-categories-relations.sql",
+        "classpath:database/categories/delete-categories-from-category-table.sql",
+        "classpath:database/books/delete-books-from-book-table.sql"},
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookControllerTest {
+    private static final Long validId = 1L;
     protected static MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
@@ -41,15 +47,6 @@ public class BookControllerTest {
                 .build();
     }
 
-    @Sql(scripts = {"classpath:/database/category/add-category.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @Sql(scripts = {"classpath:/database/delete-books-categories-relation.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )
-    @Sql(scripts = {"classpath:/database/book/delete-books.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )
     @Test
     @WithMockUser(username = "Admin", roles = "ADMIN")
     @DisplayName("Create a new book")
@@ -74,14 +71,10 @@ public class BookControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/book/add-book-1.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
     @WithMockUser(username = "User", roles = "USER")
     @DisplayName("Get book by id")
     void getBook_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 1L;
         BookDto expected = CREATE_BOOK_RESPONSE_DTO;
         expected.setIsbn(SECOND_BOOK_ISBN);
         //WHEN
@@ -101,14 +94,10 @@ public class BookControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/book/add-book-2.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
     @WithMockUser(username = "Admin", roles = "ADMIN")
     @DisplayName("Delete book by id")
     void deleteBook_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 2L;
         //WHEN
         mockMvc.perform(delete("/books/{id}", validId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -119,13 +108,6 @@ public class BookControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/book/add-book-3.sql",
-            "classpath:/database/book/add-book-4.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @Sql(scripts = {"classpath:/database/book/delete-books.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )
     @WithMockUser(username = "User", roles = "USER")
     @DisplayName("Get all books")
     void getBooks_valid_Success() throws Exception {
@@ -142,6 +124,6 @@ public class BookControllerTest {
                 result.getResponse().getContentAsString(),
                 BookDto[].class);
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.length, 2);
+        Assertions.assertEquals(actual.length, 4);
     }
 }

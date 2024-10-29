@@ -27,11 +27,14 @@ import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 import springweb.courseproject.dto.category.CategoryResponseDto;
 
-@Sql(scripts = {"classpath:/database/category/delete-category.sql"},
+@Sql(scripts = {"classpath:/database/categories/add-category-to-categories-table.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"classpath:/database/categories/delete-categories-from-category-table.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
 )
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CategoryControllerTest {
+    private static final Long validId = 1L;
     protected static MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
@@ -66,15 +69,10 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/category/delete-category.sql",
-            "classpath:/database/category/add-category.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
     @WithMockUser(username = "User", roles = "USER")
     @DisplayName("Get category by id")
     void getCategory_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 1L;
         //WHEN
         MvcResult result = mockMvc.perform(
                         get("/categories/{id}", validId)
@@ -91,15 +89,10 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/category/delete-category.sql",
-            "classpath:/database/category/add-category.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
     @WithMockUser(username = "Admin", roles = "ADMIN")
     @DisplayName("Delete category by id")
     void deleteCategory_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 1L;
         //WHEN
         mockMvc.perform(
                         delete("/categories/{id}", validId)
@@ -110,9 +103,6 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/category/add-category.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
     @WithMockUser(username = "User", roles = "USER")
     @DisplayName("Get all categories")
     void getAllCategories_validSize_Success() throws Exception {
@@ -133,15 +123,10 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/database/category/delete-category.sql",
-            "classpath:/database/category/add-category.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
     @WithMockUser(username = "ADMIN", roles = "ADMIN")
     @DisplayName("Update category by id")
     void updateCategory_validId_Success() throws Exception {
         //GIVEN
-        Long validId = 1L;
         String jsonRequest = objectMapper.writeValueAsString(UPDATE_CATEGORY_REQUEST_DTO);
         //WHEN
         MvcResult result = mockMvc.perform(
