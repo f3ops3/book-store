@@ -1,5 +1,8 @@
 package springweb.courseproject.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -7,12 +10,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import static springweb.courseproject.util.TestConstants.CREATE_CATEGORY_REQUEST_DTO;
-import static springweb.courseproject.util.TestConstants.CREATE_CATEGORY_RESPONSE_DTO;
-import static springweb.courseproject.util.TestConstants.UPDATE_CATEGORY_REQUEST_DTO;
+import static org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +24,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
-import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 import springweb.courseproject.dto.category.CategoryResponseDto;
+import springweb.courseproject.exception.EntityNotFoundException;
+import springweb.courseproject.util.TestUtil;
 
 @Sql(scripts = {"classpath:/database/categories/add-category-to-categories-table.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -51,7 +52,7 @@ public class CategoryControllerTest {
     @DisplayName("Create a new category")
     void createCategory_validRequestDto_Success() throws Exception {
         //GIVEN
-        String jsonRequest = objectMapper.writeValueAsString(CREATE_CATEGORY_REQUEST_DTO);
+        String jsonRequest = objectMapper.writeValueAsString(TestUtil.createCategoryRequestDto());
         //WHEN
         MvcResult result = mockMvc.perform(
                         post("/categories")
@@ -64,8 +65,8 @@ public class CategoryControllerTest {
         CategoryResponseDto actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 CategoryResponseDto.class);
-        Assertions.assertNotNull(actual);
-        EqualsBuilder.reflectionEquals(CREATE_CATEGORY_RESPONSE_DTO, actual, "id");
+        assertNotNull(actual);
+        assertTrue(reflectionEquals(TestUtil.createCategoryResponseDto(), actual, "id"));
     }
 
     @Test
@@ -84,8 +85,25 @@ public class CategoryControllerTest {
         CategoryResponseDto actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 CategoryResponseDto.class);
-        Assertions.assertNotNull(actual);
-        EqualsBuilder.reflectionEquals(CREATE_CATEGORY_RESPONSE_DTO, actual, "id");
+        assertNotNull(actual);
+        assertTrue(reflectionEquals(TestUtil.createCategoryResponseDto(), actual, "id"));
+    }
+
+    @Test
+    @WithMockUser(username = "User", roles = "USER")
+    @DisplayName("Get category by invalid id")
+    void getBook_invalidId_Fail() throws Exception {
+        //GIVEN
+        Long invalidId = -1L;
+        //WHEN
+        mockMvc.perform(
+                        get("/categories/{id}", invalidId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(
+                        result.getResolvedException() instanceof EntityNotFoundException));
+        //THEN
     }
 
     @Test
@@ -118,8 +136,8 @@ public class CategoryControllerTest {
         CategoryResponseDto[] actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 CategoryResponseDto[].class);
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.length, 1);
+        assertNotNull(actual);
+        assertEquals(actual.length, 1);
     }
 
     @Test
@@ -127,7 +145,7 @@ public class CategoryControllerTest {
     @DisplayName("Update category by id")
     void updateCategory_validId_Success() throws Exception {
         //GIVEN
-        String jsonRequest = objectMapper.writeValueAsString(UPDATE_CATEGORY_REQUEST_DTO);
+        String jsonRequest = objectMapper.writeValueAsString(TestUtil.updateCategoryRequestDto());
         //WHEN
         MvcResult result = mockMvc.perform(
                         put("/categories/{id}", validId)
@@ -140,7 +158,7 @@ public class CategoryControllerTest {
         CategoryResponseDto actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 CategoryResponseDto.class);
-        Assertions.assertNotNull(actual);
-        EqualsBuilder.reflectionEquals(CREATE_CATEGORY_RESPONSE_DTO, actual, "id");
+        assertNotNull(actual);
+        assertTrue(reflectionEquals(TestUtil.updateCategoryResponseDto(), actual, "id"));
     }
 }

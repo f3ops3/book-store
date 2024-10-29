@@ -1,17 +1,16 @@
 package springweb.courseproject.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import static springweb.courseproject.util.TestConstants.CREATE_BOOK_REQUEST_DTO;
-import static springweb.courseproject.util.TestConstants.CREATE_BOOK_RESPONSE_DTO;
-import static springweb.courseproject.util.TestConstants.SECOND_BOOK_ISBN;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
-import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 import springweb.courseproject.dto.book.BookDto;
+import springweb.courseproject.exception.EntityNotFoundException;
+import springweb.courseproject.util.TestUtil;
 
 @Sql(scripts = {"classpath:database/books/add-books-to-book-table.sql",
         "classpath:database/categories/add-category-to-categories-table.sql"},
@@ -51,9 +51,8 @@ public class BookControllerTest {
     @WithMockUser(username = "Admin", roles = "ADMIN")
     @DisplayName("Create a new book")
     void createBook_validRequestDto_Success() throws Exception {
-        //Given
-        String jsonRequest = objectMapper.writeValueAsString(CREATE_BOOK_REQUEST_DTO);
-
+        //GIVEN
+        String jsonRequest = objectMapper.writeValueAsString(TestUtil.createBookRequestDto());
         //WHEN
         MvcResult result = mockMvc.perform(
                         post("/books")
@@ -66,8 +65,8 @@ public class BookControllerTest {
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
                 BookDto.class);
 
-        Assertions.assertNotNull(actual);
-        EqualsBuilder.reflectionEquals(CREATE_BOOK_RESPONSE_DTO, actual, "id");
+        assertNotNull(actual);
+        compare(TestUtil.createBookResponseDto(), actual);
     }
 
     @Test
@@ -75,8 +74,8 @@ public class BookControllerTest {
     @DisplayName("Get book by id")
     void getBook_validId_Success() throws Exception {
         //GIVEN
-        BookDto expected = CREATE_BOOK_RESPONSE_DTO;
-        expected.setIsbn(SECOND_BOOK_ISBN);
+        BookDto expected = TestUtil.createBookResponseDto();
+        expected.setIsbn(TestUtil.getSecondBookIsbn());
         //WHEN
         MvcResult result = mockMvc.perform(
                         get("/books/{id}", validId)
@@ -88,9 +87,25 @@ public class BookControllerTest {
         BookDto actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 BookDto.class);
-        Assertions.assertNotNull(actual);
-        EqualsBuilder.reflectionEquals(expected, actual,
-                "id", "categoryIds", "coverImage", "description");
+        assertNotNull(actual);
+        compare(expected, actual);
+    }
+
+    @Test
+    @WithMockUser(username = "User", roles = "USER")
+    @DisplayName("Get book by invalid id")
+    void getBook_invalidId_Fail() throws Exception {
+        //GIVEN
+        Long invalidId = -1L;
+        //WHEN
+        mockMvc.perform(
+                        get("/books/{id}", invalidId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(
+                        result.getResolvedException() instanceof EntityNotFoundException));
+        //THEN
     }
 
     @Test
@@ -123,7 +138,14 @@ public class BookControllerTest {
         BookDto[] actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 BookDto[].class);
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.length, 4);
+        assertNotNull(actual);
+        assertEquals(actual.length, 4);
+    }
+
+    void compare(BookDto expected, BookDto actual) {
+        assertEquals(expected.getIsbn(), actual.getIsbn());
+        assertEquals(expected.getTitle(), actual.getTitle());
+        assertEquals(expected.getAuthor(), actual.getAuthor());
+        assertEquals(0, expected.getPrice().compareTo(actual.getPrice()));
     }
 }
