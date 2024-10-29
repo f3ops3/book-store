@@ -34,8 +34,8 @@ import springweb.courseproject.dto.category.CategoryResponseDto;
 )
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CategoryControllerTest {
-    private static final Long validId = 1L;
     protected static MockMvc mockMvc;
+    private static final Long validId = 1L;
     @Autowired
     private ObjectMapper objectMapper;
 

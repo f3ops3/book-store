@@ -35,8 +35,8 @@ import springweb.courseproject.dto.book.BookDto;
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookControllerTest {
-    private static final Long validId = 1L;
     protected static MockMvc mockMvc;
+    private static final Long validId = 1L;
     @Autowired
     private ObjectMapper objectMapper;
 
