@@ -1,0 +1,490 @@
+{
+	"info": {
+		"_postman_id": "1a626d43-3d41-4815-bd19-e288e8cab3dd",
+		"name": "Book store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38485286"
+	},
+	"item": [
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Create book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjg5OTI4ODAsImV4cCI6MTcyODk5MzE4MH0.TNzQusKjPU4fmhP_B-UQcWeK9O8BTSd5HeRBn4_PqKk"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Harry Potter\",\r\n  \"author\": \"Joanne Rowling\",\r\n  \"isbn\": \"1234567890\",\r\n  \"price\": 49.99,\r\n  \"description\": \"Yet another sample book description.\",\r\n  \"coverImage\": \"http://example.com/cover3.jpg\",\r\n  \"categoryIds\": [3] \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "Get book by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2huQGdtYWlsLmNvbSIsImlhdCI6MTcyODk1MjMwMCwiZXhwIjoxNzI4OTUyNjAwfQ.wCqX47hKqxP1-f8E4x03hlVoGEzfioLRIbXFpVtSS_U"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/books/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all books",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2huQGdtYWlsLmNvbSIsImlhdCI6MTcyODk1MjMwMCwiZXhwIjoxNzI4OTUyNjAwfQ.wCqX47hKqxP1-f8E4x03hlVoGEzfioLRIbXFpVtSS_U"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete book by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2huQGdtYWlsLmNvbSIsImlhdCI6MTcyODk1MjMwMCwiZXhwIjoxNzI4OTUyNjAwfQ.wCqX47hKqxP1-f8E4x03hlVoGEzfioLRIbXFpVtSS_U"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/books/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Update book by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjg5NTE1MzEsImV4cCI6MTcyODk1MTgzMX0.Kc8GzFRtPETZiwcrmVoL1ho6NVkMukxiMDRunFpAegQ"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Sherloc Holms\",\r\n  \"author\": \"Conan Doyle\",\r\n  \"isbn\": \"9781122334487123\",\r\n  \"price\": 50.99,\r\n  \"description\": \"Yet new one sample book description.\",\r\n  \"coverImage\": \"http://example.com/cover12.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/books/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Search books",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjg5NTE5MTQsImV4cCI6MTcyODk1MjIxNH0.nDFelFlTZqPqaWrkvWQ8b1ner7v_9mzZ4OE7_nNNnpI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/books/search?authors=Joanne Rowling",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"books",
+								"search"
+							],
+							"query": [
+								{
+									"key": "authors",
+									"value": "Joanne Rowling"
+								},
+								{
+									"key": "titles",
+									"value": "Harry Potter 3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2huQGdtYWlsLmNvbSIsImlhdCI6MTcyODk1MjA2MCwiZXhwIjoxNzI4OTUyMzYwfQ.xeM0-Zsr2rKN5zKxoMZAauljRFRAQFBIYTs85CczGIU"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Romance\",\r\n  \"description\": \"Passion between two people\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "Get category by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjg5NTE1MzEsImV4cCI6MTcyODk1MTgzMX0.Kc8GzFRtPETZiwcrmVoL1ho6NVkMukxiMDRunFpAegQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/categories/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjk3MjMxMzMsImV4cCI6MTcyOTcyMzQzM30.FLxe66GAnicrGcErVP3NvzQZyx8YBodykUS-s7ahTYM"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjg5NTE1MzEsImV4cCI6MTcyODk1MTgzMX0.Kc8GzFRtPETZiwcrmVoL1ho6NVkMukxiMDRunFpAegQ"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/categories/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update category by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjg5NTE1MzEsImV4cCI6MTcyODk1MTgzMX0.Kc8GzFRtPETZiwcrmVoL1ho6NVkMukxiMDRunFpAegQ"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Romance\",\r\n  \"description\": \"Passion between man and woman\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/categories/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get books with category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjg5NTE1MzEsImV4cCI6MTcyODk1MTgzMX0.Kc8GzFRtPETZiwcrmVoL1ho6NVkMukxiMDRunFpAegQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/categories/2/books"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shopping cart",
+			"item": [
+				{
+					"name": "Get shopping cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjk0OTgzNTEsImV4cCI6MTcyOTQ5ODY1MX0.1DJVsOu_zi3-MpnMUoy5znIMHhfCYg7X4cXiVTkmtvs"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Add new cart item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjk0OTgzNTEsImV4cCI6MTcyOTQ5ODY1MX0.1DJVsOu_zi3-MpnMUoy5znIMHhfCYg7X4cXiVTkmtvs"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": 2,\r\n    \"quantity\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Update cart item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTcyOTI3MDkxOSwiZXhwIjoxNzI5MjcxMjE5fQ.6kUKCFpWw0YWPU416IrHKfXcV4Cci9i9NBB7-DMD7jM"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/cart/items/4"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete cart item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTcyOTI3MDEwMiwiZXhwIjoxNzI5MjcwNDAyfQ.zwlw3JjJugY8-Q6ITHzc8DcRX9pSV7dBVZ1kYHq8uGQ"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/cart/items/4"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create new account",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"john@gmail.com\",\r\n  \"password\": \"qwer1234\",\r\n  \"repeatPassword\": \"qwer1234\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Snow\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/auth/registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Log in",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/auth/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create new order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjk0OTg4NTQsImV4cCI6MTcyOTQ5OTE1NH0.2osX0ccazwT3DKvKBoxWU2NhQ7e77P2EKCnAuftThzM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"shippingAddress\": \"Soborna 10, appartment 56\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Update order status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjk1NDIyNDQsImV4cCI6MTcyOTU0MjU0NH0.p3lBqYfNVqWHBRo3N9MXhtKOFLyMS4bU_bVXbKSqLK0"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": "http://localhost:8080/api/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjk0OTkwMjksImV4cCI6MTcyOTQ5OTMyOX0.Ugppng8O8by-s1Gvxt32GChxjL-VZc4HW1gebgnn0GY"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Get order items from order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjk0OTkwMjksImV4cCI6MTcyOTQ5OTMyOX0.Ugppng8O8by-s1Gvxt32GChxjL-VZc4HW1gebgnn0GY"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/orders/1/items"
+					},
+					"response": []
+				},
+				{
+					"name": "Get order item from order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mjk0OTkwMjksImV4cCI6MTcyOTQ5OTMyOX0.Ugppng8O8by-s1Gvxt32GChxjL-VZc4HW1gebgnn0GY"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/orders/1/items/2"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
